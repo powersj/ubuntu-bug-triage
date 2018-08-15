@@ -1,0 +1,21 @@
+name: ubuntu-bug-triage
+summary: Recently updated Launchpad bugs for triage
+description: |
+  Recently updated Launchpad bugs for triage. User provides a source
+  package or a package team to search bugs for. By default, will
+  provide yesterday's bugs for triage or the user can provide a
+  different day or even a date range.
+version: 2.0
+architectures: [amd64]
+grade: stable
+confinement: strict
+
+apps:
+    ubuntu-bug-triage:
+        command: bin/ubuntu-bug-triage
+
+parts:
+    ustriage:
+        plugin: python
+        source: https://github.com/powersj/ubuntu-bug-triage
+        source-type: git
