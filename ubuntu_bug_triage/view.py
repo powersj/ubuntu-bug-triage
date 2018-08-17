@@ -4,12 +4,68 @@
 import json
 import os
 import textwrap
+import time
+import webbrowser
 
 from tabulate import tabulate
 
 
 class BaseView:
     """Base view class."""
+
+
+class BrowserView(BaseView):
+    """Browser view class.
+
+    This class uses the webbrowser from the Python standard library.
+    There is no way to know if a page has fully loaded or know when
+    a browser is even open. As such this is fire and forget behavior
+    and it leads to errors on opening pages.
+
+    I looked into selenium, but found mixed results and had to figure
+    out what browser to use in the first place and went with the crude
+    sleep statements below.
+    """
+
+    def __init__(self, bugs):
+        """Initialize browser view."""
+        self.opened = False
+        for bug in bugs:
+            self._open_url(bug.url)
+
+    def _open_url(self, url):
+        """Open a given url."""
+        if self.opened:
+            webbrowser.open_new_tab(url)
+            time.sleep(1.2)
+        else:
+            webbrowser.open(url)
+            self.opened = True
+            time.sleep(5)
+
+
+class CSVView(BaseView):
+    """CSV view class."""
+
+    def __init__(self, bugs):
+        """Initialize CSV view."""
+        print('id,affects,title')
+        for bug in bugs:
+            print('LP: #%s,"%s",%s' % (
+                bug.id, ','.join(bug.affects), bug.title
+            ))
+
+
+class JSONView(BaseView):
+    """JSON view class."""
+
+    def __init__(self, bugs):
+        """Initialize JSON view."""
+        print(json.dumps(
+            [bug.to_json() for bug in bugs],
+            indent=4,
+            ensure_ascii=False
+        ))
 
 
 class TerminalView(BaseView):
@@ -50,27 +106,3 @@ class TerminalView(BaseView):
             ])
 
         print(tabulate(table, ['id', 'affects', 'title'], 'grid'))
-
-
-class CSVView(BaseView):
-    """CSV view class."""
-
-    def __init__(self, bugs):
-        """Initialize CSV view."""
-        print('id,affects,title')
-        for bug in bugs:
-            print('LP: #%s,"%s",%s' % (
-                bug.id, ','.join(bug.affects), bug.title
-            ))
-
-
-class JSONView(BaseView):
-    """JSON view class."""
-
-    def __init__(self, bugs):
-        """Initialize JSON view."""
-        print(json.dumps(
-            [bug.to_json() for bug in bugs],
-            indent=4,
-            ensure_ascii=False
-        ))

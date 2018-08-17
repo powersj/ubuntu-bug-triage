@@ -5,17 +5,27 @@ description: |
   package or a package team to search bugs for. By default, will
   provide yesterday's bugs for triage or the user can provide a
   different day or even a date range.
-version: 2.0
-architectures: [amd64]
+
+version: git
 grade: stable
 confinement: strict
+architectures:
+    - amd64
+environment:
+    LC_ALL: C.UTF-8
+    LANG: C.UTF-8
 
 apps:
     ubuntu-bug-triage:
         command: bin/ubuntu-bug-triage
+        plugs:
+            - browser-support
+            - desktop
+            - network
+            - network-bind
 
 parts:
-    ustriage:
+    ubuntu-bug-triage:
         plugin: python
         source: https://github.com/powersj/ubuntu-bug-triage
         source-type: git

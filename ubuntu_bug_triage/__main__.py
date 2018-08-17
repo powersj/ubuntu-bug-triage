@@ -4,11 +4,10 @@
 import argparse
 import logging
 import sys
-import webbrowser
 
 from . import UBUNTU_PACKAGE_TEAMS
 from .triage import PackageTriage, TeamTriage
-from .view import CSVView, JSONView, TerminalView
+from .view import BrowserView, CSVView, JSONView, TerminalView
 
 
 def parse_args():
@@ -72,8 +71,7 @@ def launch():
         TerminalView(bugs)
 
     if args.open:
-        for bug in bugs:
-            webbrowser.open(bug.url)
+        BrowserView(bugs)
 
 
 if __name__ == '__main__':

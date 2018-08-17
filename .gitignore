@@ -15,3 +15,7 @@ cover
 
 # Collect
 *.tar.gz
+
+# Snap
+*.tar.bz2
+*.snap

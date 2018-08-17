@@ -1,7 +1,7 @@
 PYTHON = python3
 SETUP  := $(PYTHON) setup.py
 
-.PHONY: clean install publish test venv
+.PHONY: clean install publish snap test venv
 
 clean:
 	$(SETUP) clean
@@ -15,6 +15,9 @@ publish:
 	rm -rf dist/
 	$(SETUP) sdist
 	twine upload dist/*
+
+snap:
+	snapcraft cleanbuild
 
 test:
 	$(SETUP) check -r -s
