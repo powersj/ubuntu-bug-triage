@@ -15,7 +15,7 @@ with open(README_FILE, 'r') as readme:
 
 setup(
     name='ubuntu-bug-triage',
-    version='18.2',
+    version='18.3',
     description='Recently updated Launchpad bugs for triage',
     long_description=README_TEXT,
     long_description_content_type='text/markdown',
