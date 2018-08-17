@@ -4,13 +4,17 @@
 
 ## Install
 
-User's can obtain ubuntu-bug-triage from PyPI:
+Users can obtain ubuntu-bug-triage as a snap:
+
+```shell
+snap install ubuntu-bug-triage
+```
+
+Or via PyPI:
 
 ```shell
 pip3 install ubuntu-bug-triage
 ```
-
-A snap is coming soon.
 
 ## Usage
 
@@ -19,14 +23,19 @@ Usage is as simple as running the script to get today's bugs needing triage for 
 ```shell
 ubuntu-bug-triage [team|package]
 ubuntu-bug-triage cloud-init
+ubuntu-bug-triage foundations-bugs
 ```
 
 Users can also specify a number of days of bugs to triage:
 
 ```shell
-ubuntu-bug-triage lxd 10
+ubuntu-bug-triage mysql-5.7 10
 ```
 
-There are also `--json` and `--csv` flags to allow for CSV and JSON output respectively.
+## Machine Readable Output
 
-Finally, the bugs to triage can be opened automatically in a webbrowser via `--open` flag.
+There are also `--json` and `--csv` flags to allow for JSON and CSV output respectively. These are available to allow for machine readable output.
+
+## Open in Browser
+
+Users on Ubuntu will be able to click on the Launchpad ID (e.g. 'LP: #1234567') in the output to open the browser. However, if a user wishes to open all the bugs quickly in his or her browser then use the `--open` flag! However, be warned that opening a large number of bugs (i.e. > 15) can lead to multiple browser windows getting opened.
