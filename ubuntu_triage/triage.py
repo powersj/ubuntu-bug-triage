@@ -1,4 +1,4 @@
-# This file is part of ubuntu-bug-triage. See LICENSE file for license info.
+# This file is part of ubuntu-triage. See LICENSE file for license info.
 """Triage module."""
 
 from datetime import datetime, timedelta
@@ -43,7 +43,7 @@ class Triage:
         if anon:
             self._log.debug('logging into Launchpad anonymously')
             return Launchpad.login_anonymously(
-                'ubuntu-bug-triage', 'production', version='devel'
+                'ubuntu-triage', 'production', version='devel'
             )
 
         self._log.debug('logging into Launchpad')
@@ -51,7 +51,7 @@ class Triage:
             os.path.expanduser('~/.lp_creds')
         )
         return Launchpad.login_with(
-            'ubuntu-bug-triage', 'production', version='devel',
+            'ubuntu-triage', 'production', version='devel',
             credential_store=credential_store
         )
 

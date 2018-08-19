@@ -1,4 +1,4 @@
-# This file is part of ubuntu-bug-triage. See LICENSE file for license info.
+# This file is part of ubuntu-triage. See LICENSE file for license info.
 """Triage module."""
 
 import json
