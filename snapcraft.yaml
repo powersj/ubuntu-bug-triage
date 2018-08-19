@@ -1,16 +1,18 @@
 name: ubuntu-bug-triage
 summary: Recently updated Launchpad bugs for triage
 description: |
-  Recently updated Launchpad bugs for triage. User provides a source
-  package or a package team to search bugs for. By default, will
-  provide yesterday's bugs for triage or the user can provide a
-  different day or even a date range.
+    Get involved and help fix Ubuntu bugs! Obtain a list of bugs for an
+    Ubuntu team or package that were created or updated yesterday.
+
+    Users can further define the number of days to triage to increase
+    the number of bugs found, the output type to allow machine readable
+    output, or set the behavior to open the bugs in a browser and
+    immediately begin bug triage.
 
 version: git
+version-script: git rev-parse --short HEAD
 grade: stable
 confinement: strict
-architectures:
-    - amd64
 environment:
     LC_ALL: C.UTF-8
     LANG: C.UTF-8
@@ -29,3 +31,7 @@ parts:
         plugin: python
         source: https://github.com/powersj/ubuntu-bug-triage
         source-type: git
+        stage-packages:
+            - libdb5.3
+            - libffi-dev
+            - libssl-dev
