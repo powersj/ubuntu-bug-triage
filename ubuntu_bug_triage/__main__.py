@@ -24,6 +24,10 @@ def parse_args():
         help="""days of updated bugs to triage"""
     )
     parser.add_argument(
+        '--anon', action='store_true',
+        help='Anonymous login to Launchpad'
+    )
+    parser.add_argument(
         '--csv', action='store_true',
         help='output as CSV'
     )
@@ -58,9 +62,9 @@ def launch():
     setup_logging(args.debug)
 
     if args.package_or_team in UBUNTU_PACKAGE_TEAMS:
-        triage = TeamTriage(args.package_or_team, args.days)
+        triage = TeamTriage(args.package_or_team, args.days, args.anon)
     else:
-        triage = PackageTriage(args.package_or_team, args.days)
+        triage = PackageTriage(args.package_or_team, args.days, args.anon)
 
     bugs = triage.updated_bugs()
     if args.csv:

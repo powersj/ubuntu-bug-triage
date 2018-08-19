@@ -15,11 +15,11 @@ from .bug import Bug
 class Triage:
     """Base triage class."""
 
-    def __init__(self, days):
+    def __init__(self, days, anon):
         """Initialize triage class."""
         self._log = logging.getLogger(__name__)
 
-        self.launchpad = self._launchpad_connect()
+        self.launchpad = self._launchpad_connect(anon)
         self.ubuntu = self.launchpad.distributions['Ubuntu']
         self.date = (
             datetime.now().date() - timedelta(days=days)
@@ -33,27 +33,26 @@ class Triage:
         """Return updated bugs."""
         raise NotImplementedError
 
-    def _launchpad_connect(self):
+    def _launchpad_connect(self, anon=False):
         """Use the launchpad module connect to launchpad.
 
-        Will connect you to the Launchpad website the first time you run
-        this to authorize your system to connect.
+        Will connect you to the Launchpad website the first time you
+        run this to authorize your system to connect unless anonymous
+        login is specified.
         """
-        credentials_path = os.path.expanduser('~/.lp_creds')
-
-        if os.path.exists(credentials_path):
-            self._log.debug('logging into Launchpad with ~/.lp_creds')
-            credential_store = UnencryptedFileCredentialStore(
-                credentials_path
-            )
-            return Launchpad.login_with(
-                'ubuntu-bug-triage', 'production', version='devel',
-                credential_store=credential_store
+        if anon:
+            self._log.debug('logging into Launchpad anonymously')
+            return Launchpad.login_anonymously(
+                'ubuntu-bug-triage', 'production', version='devel'
             )
 
-        self._log.debug('logging into Launchpad anonymously')
-        return Launchpad.login_anonymously(
-            'ubuntu-bug-triage', 'production', version='devel'
+        self._log.debug('logging into Launchpad')
+        credential_store = UnencryptedFileCredentialStore(
+            os.path.expanduser('~/.lp_creds')
+        )
+        return Launchpad.login_with(
+            'ubuntu-bug-triage', 'production', version='devel',
+            credential_store=credential_store
         )
 
     @staticmethod
@@ -71,9 +70,9 @@ class Triage:
 class TeamTriage(Triage):
     """Triage Launchpad bugs for a particular Ubuntu team."""
 
-    def __init__(self, team, days):
+    def __init__(self, team, days, anon):
         """Initialize Team Triage."""
-        super().__init__(days)
+        super().__init__(days, anon)
 
         self.team = self.launchpad.people[team]
 
@@ -113,9 +112,9 @@ class TeamTriage(Triage):
 class PackageTriage(Triage):
     """Triage Launchpad bugs for a particular package."""
 
-    def __init__(self, package, days):
+    def __init__(self, package, days, anon):
         """Initialize package triage."""
-        super().__init__(days)
+        super().__init__(days, anon)
         self.package = self.ubuntu.getSourcePackage(name=package)
 
     def current_backlog_count(self):
