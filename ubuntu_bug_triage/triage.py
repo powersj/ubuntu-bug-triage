@@ -74,6 +74,7 @@ class TeamTriage(Triage):
         """Initialize Team Triage."""
         super().__init__(days, anon)
 
+        self._log.debug('finding bugs for team: %s', team)
         self.team = self.launchpad.people[team]
 
     def current_backlog_count(self):
@@ -93,6 +94,7 @@ class TeamTriage(Triage):
 
             if self.team.name in BLACKLIST:
                 if self._all_src_on_blacklist(bug.tasks, self.team.name):
+                    self._log.debug('skipping bug: %s', bug_id)
                     continue
 
             bugs.append(bug)
@@ -115,6 +117,8 @@ class PackageTriage(Triage):
     def __init__(self, package, days, anon):
         """Initialize package triage."""
         super().__init__(days, anon)
+
+        self._log.debug('finding bugs for package: %s', package)
         self.package = self.ubuntu.getSourcePackage(name=package)
 
     def current_backlog_count(self):

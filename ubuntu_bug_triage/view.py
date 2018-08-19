@@ -2,6 +2,7 @@
 """Triage module."""
 
 import json
+import logging
 import os
 import textwrap
 import time
@@ -12,6 +13,10 @@ from tabulate import tabulate
 
 class BaseView:
     """Base view class."""
+
+    def __init__(self):
+        """Initialize base view."""
+        self._log = logging.getLogger(__name__)
 
 
 class BrowserView(BaseView):
@@ -29,6 +34,9 @@ class BrowserView(BaseView):
 
     def __init__(self, bugs):
         """Initialize browser view."""
+        super().__init__()
+
+        self._log.debug('opening bugs in browser')
         self.opened = False
         for bug in bugs:
             self._open_url(bug.url)
@@ -49,6 +57,8 @@ class CSVView(BaseView):
 
     def __init__(self, bugs):
         """Initialize CSV view."""
+        super().__init__()
+
         print('id,affects,title')
         for bug in bugs:
             print('LP: #%s,"%s",%s' % (
@@ -61,6 +71,8 @@ class JSONView(BaseView):
 
     def __init__(self, bugs):
         """Initialize JSON view."""
+        super().__init__()
+
         print(json.dumps(
             [bug.to_json() for bug in bugs],
             indent=4,
@@ -73,6 +85,8 @@ class TerminalView(BaseView):
 
     def __init__(self, bugs):
         """Initialize terminal view."""
+        super().__init__()
+
         _, self.term_columns = os.popen('stty size', 'r').read().split()
 
         # The table has a set number characters that always exist:
