@@ -92,14 +92,22 @@ class TeamTriage(Triage):
         for bug_id in sorted(self._tasks_to_bug_ids(updated_tasks)):
             bug = Bug(self.launchpad.bugs[bug_id])
 
-            # if only one task and src is on blacklist, continue
-            if self.team.name in BLACKLIST and len(bug.tasks) == 1:
-                if bug.tasks[0].src_pkg in BLACKLIST[self.team.name]:
+            if self.team.name in BLACKLIST:
+                if self._all_src_on_blacklist(bug.tasks, self.team.name):
                     continue
 
             bugs.append(bug)
 
         return bugs
+
+    @staticmethod
+    def _all_src_on_blacklist(tasks, team):
+        """Test if bug tasks source packages are all on blacklist."""
+        for task in tasks:
+            if task.src_pkg not in BLACKLIST[team]:
+                return False
+
+        return True
 
 
 class PackageTriage(Triage):
