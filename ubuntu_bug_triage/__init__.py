@@ -1,4 +1,4 @@
-# This file is part of ubuntu-triage. See LICENSE file for license info.
+# This file is part of ubuntu-bug-triage. See LICENSE file for license info.
 """Ubuntu Bug Triage module."""
 
 # This is a hard-coded list of teams that produce a lot of bugs and may

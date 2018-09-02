@@ -14,16 +14,16 @@ with open(README_FILE, 'r') as readme:
     README_TEXT = readme.read()
 
 setup(
-    name='ubuntu-triage',
+    name='ubuntu-bug-triage',
     version='18.3',
     description='Recently updated Launchpad bugs for triage',
     long_description=README_TEXT,
     long_description_content_type='text/markdown',
     author='Joshua Powers',
     author_email='josh.powers@canonical.com',
-    url='https://github.com/powersj/ubuntu-triage',
+    url='https://github.com/powersj/ubuntu-bug-triage',
     download_url=(
-        'https://github.com/powersj/ubuntu-triage/tarball/master'
+        'https://github.com/powersj/ubuntu-bug-triage/tarball/master'
     ),
     install_requires=REQUIREMENTS,
     python_requires='>=3.4',
@@ -46,7 +46,7 @@ setup(
     packages=find_packages(),
     entry_points={
         'console_scripts':
-            ['ubuntu-triage=ubuntu_triage.__main__:launch']
+            ['ubuntu-bug-triage=ubuntu_bug_triage.__main__:launch']
     },
     zip_safe=True
 )

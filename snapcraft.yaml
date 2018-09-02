@@ -1,4 +1,4 @@
-name: ubuntu-triage
+name: ubuntu-bug-triage
 summary: Recently updated Launchpad bugs for triage
 description: |
     Get involved and help fix Ubuntu bugs! Obtain a list of bugs for an
@@ -18,8 +18,8 @@ environment:
     LANG: C.UTF-8
 
 apps:
-    ubuntu-triage:
-        command: bin/ubuntu-triage
+    ubuntu-bug-triage:
+        command: bin/ubuntu-bug-triage
         plugs:
             - browser-support
             - desktop
@@ -27,9 +27,9 @@ apps:
             - network-bind
 
 parts:
-    ubuntu-triage:
+    ubuntu-bug-triage:
         plugin: python
-        source: https://github.com/powersj/ubuntu-triage
+        source: https://github.com/powersj/ubuntu-bug-triage
         source-type: git
         stage-packages:
             - libdb5.3

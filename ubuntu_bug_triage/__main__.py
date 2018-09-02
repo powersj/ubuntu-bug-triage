@@ -1,4 +1,4 @@
-# This file is part of ubuntu-triage. See LICENSE file for license info.
+# This file is part of ubuntu-bug-triage. See LICENSE file for license info.
 """Ubuntu Bug Triage module."""
 
 import argparse
@@ -12,7 +12,7 @@ from .view import BrowserView, CSVView, JSONView, TerminalView
 
 def parse_args():
     """Set up command-line arguments."""
-    parser = argparse.ArgumentParser('ubuntu-triage')
+    parser = argparse.ArgumentParser('ubuntu-bug-triage')
     parser.add_argument(
         'package_or_team', nargs='?', default='ubuntu-server',
         help="""source package name (e.g. cloud-init, lxd) or package team name
@@ -57,7 +57,7 @@ def setup_logging(debug):
 
 
 def launch():
-    """Launch ubuntu-triage."""
+    """Launch ubuntu-bug-triage."""
     args = parse_args()
     setup_logging(args.debug)
 
