@@ -4,6 +4,7 @@
 from datetime import datetime, timedelta
 import logging
 import os
+import sys
 
 from launchpadlib.launchpad import Launchpad
 from launchpadlib.credentials import UnencryptedFileCredentialStore
@@ -127,7 +128,11 @@ class PackageTriage(Triage):
 
     def updated_bugs(self):
         """Print update bugs for a specific date or date range."""
-        updated_tasks = self.package.searchTasks(modified_since=self.date)
+        try:
+            updated_tasks = self.package.searchTasks(modified_since=self.date)
+        except AttributeError:
+            self._log.error('Oops: No package exists called %s', self.package)
+            sys.exit(1)
 
         bugs = []
         for bug_id in sorted(self._tasks_to_bug_ids(updated_tasks)):
