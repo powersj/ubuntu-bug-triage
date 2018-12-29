@@ -131,7 +131,7 @@ class PackageTriage(Triage):
         try:
             updated_tasks = self.package.searchTasks(modified_since=self.date)
         except AttributeError:
-            self._log.error('Oops: No package exists called %s', self.package)
+            self._log.error('Oops: No package with that name exists')
             sys.exit(1)
 
         bugs = []
