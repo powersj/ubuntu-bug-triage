@@ -43,6 +43,10 @@ def parse_args():
         '--open', action='store_true',
         help='open resulting bugs in web browser'
     )
+    parser.add_argument(
+        '--include-project', '-p', action='store_true',
+        help='include project bugs in output'
+    )
 
     return parser.parse_args()
 
@@ -62,9 +66,14 @@ def launch():
     setup_logging(args.debug)
 
     if args.package_or_team in UBUNTU_PACKAGE_TEAMS:
+        if args.include_project:
+            logging.getLogger(__name__).warning(
+                "N.B. --include-project has no effect when running against a"
+                " package team")
         triage = TeamTriage(args.package_or_team, args.days, args.anon)
     else:
-        triage = PackageTriage(args.package_or_team, args.days, args.anon)
+        triage = PackageTriage(args.package_or_team, args.days, args.anon,
+                               args.include_project)
 
     bugs = triage.updated_bugs()
     if args.csv:

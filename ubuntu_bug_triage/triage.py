@@ -2,6 +2,7 @@
 """Triage module."""
 
 from datetime import datetime, timedelta
+import itertools
 import logging
 import os
 import sys
@@ -115,7 +116,7 @@ class TeamTriage(Triage):
 class PackageTriage(Triage):
     """Triage Launchpad bugs for a particular package."""
 
-    def __init__(self, package, days, anon):
+    def __init__(self, package, days, anon, include_project):
         """Initialize package triage."""
         super().__init__(days, anon)
 
@@ -124,14 +125,31 @@ class PackageTriage(Triage):
         if self.package is None:
             self._log.error('Oops: No package with that name exists')
             sys.exit(1)
+        self.project = None
+        if include_project:
+            try:
+                self.project = self.launchpad.projects[package]
+            except KeyError:
+                self._log.error('Oops: No project with that name exists')
+                sys.exit(1)
 
     def current_backlog_count(self):
         """Get packages's current backlog count."""
-        return len(self.package.searchTasks())
+        count = len(self.package.searchTasks())
+        if self.project is not None:
+            count += len(self.project.searchTasks())
+        return count
 
     def updated_bugs(self):
         """Print update bugs for a specific date or date range."""
-        updated_tasks = self.package.searchTasks(modified_since=self.date)
+        package_tasks = self.package.searchTasks(modified_since=self.date)
+        project_tasks = []
+        if self.project is not None:
+            project_tasks = self.project.searchTasks(modified_since=self.date)
+
+        # launchpadlib Collections don't support appending one another, so
+        # synthesise an iterable containing both the Collections we care about
+        updated_tasks = itertools.chain(package_tasks, project_tasks)
 
         bugs = []
         for bug_id in sorted(self._tasks_to_bug_ids(updated_tasks)):
