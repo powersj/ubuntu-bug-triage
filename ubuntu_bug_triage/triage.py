@@ -121,6 +121,9 @@ class PackageTriage(Triage):
 
         self._log.debug('finding bugs for package: %s', package)
         self.package = self.ubuntu.getSourcePackage(name=package)
+        if self.package is None:
+            self._log.error('Oops: No package with that name exists')
+            sys.exit(1)
 
     def current_backlog_count(self):
         """Get packages's current backlog count."""
@@ -128,11 +131,7 @@ class PackageTriage(Triage):
 
     def updated_bugs(self):
         """Print update bugs for a specific date or date range."""
-        try:
-            updated_tasks = self.package.searchTasks(modified_since=self.date)
-        except AttributeError:
-            self._log.error('Oops: No package with that name exists')
-            sys.exit(1)
+        updated_tasks = self.package.searchTasks(modified_since=self.date)
 
         bugs = []
         for bug_id in sorted(self._tasks_to_bug_ids(updated_tasks)):
