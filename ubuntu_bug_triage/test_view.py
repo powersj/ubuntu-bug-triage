@@ -11,12 +11,12 @@ from .view import TerminalView, CSVView, JSONView, BrowserView
 
 @pytest.fixture(scope='module')
 def bugs():
-    """TODO."""
+    """Create array of bugs for testing."""
     return [Bug(MockBug1234567()), Bug(MockBug1234567())]
 
 
 def test_browser_view(bugs):
-    """TODO."""
+    """Test out browser is launched."""
     # mock out the sleeps to prevent slowing down unit tests
     import time
     time.sleep = Mock()
@@ -35,17 +35,17 @@ def test_browser_view(bugs):
 
 
 def test_csv_view(bugs):
-    """TODO."""
+    """Test CSV view."""
     assert CSVView(bugs)
 
 
 def test_json_view(bugs):
-    """TODO."""
+    """Test JSON view."""
     assert JSONView(bugs)
 
 
 def test_terminal_view(bugs):
-    """TODO."""
+    """Test terminal view."""
     # Mock out the terminal width call
     import os
     os.popen = Mock()
