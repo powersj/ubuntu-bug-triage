@@ -22,7 +22,6 @@ class Triage:
         self._log = logging.getLogger(__name__)
 
         self.launchpad = self._launchpad_connect(anon)
-        self.ubuntu = self.launchpad.distributions['Ubuntu']
         self.date = (
             datetime.now().date() - timedelta(days=days)
         ).strftime('%Y-%m-%d')
@@ -81,13 +80,19 @@ class TeamTriage(Triage):
 
     def current_backlog_count(self):
         """Get team's current backlog count."""
-        return len(self.ubuntu.searchTasks(bug_subscriber=self.team))
+        return len(
+            self.launchpad.ubuntu.distributions['Ubuntu'].searchTasks(
+                bug_subscriber=self.team
+            )
+        )
 
     def updated_bugs(self):
         """Print update bugs for a specific date or date range."""
-        updated_tasks = self.ubuntu.searchTasks(
-            modified_since=self.date,
-            structural_subscriber=self.team
+        updated_tasks = (
+            self.launchpad.ubuntu.distributions['Ubuntu'].searchTasks(
+                modified_since=self.date,
+                structural_subscriber=self.team
+            )
         )
 
         bugs = []
@@ -121,7 +126,11 @@ class PackageTriage(Triage):
         super().__init__(days, anon)
 
         self._log.debug('finding bugs for package: %s', package)
-        self.package = self.ubuntu.getSourcePackage(name=package)
+        self.package = (
+            self.launchpad.ubuntu.distributions['Ubuntu'].getSourcePackage(
+                name=package
+            )
+        )
         if self.package is None:
             self._log.error('Oops: No package with that name exists')
             sys.exit(1)
