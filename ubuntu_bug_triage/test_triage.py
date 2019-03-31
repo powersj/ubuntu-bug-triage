@@ -8,7 +8,7 @@ from .triage import Triage
 
 
 def test_launchpad_login():
-    """TODO."""
+    """Test launchpad login."""
     from launchpadlib.credentials import UnencryptedFileCredentialStore
     UnencryptedFileCredentialStore = Mock()  # noqa: F811
     UnencryptedFileCredentialStore.return_value = True
@@ -28,7 +28,7 @@ def test_launchpad_login():
 
 
 def test_launchpad_login_anon():
-    """TODO."""
+    """Test anonymous login."""
     from launchpadlib.credentials import UnencryptedFileCredentialStore
     UnencryptedFileCredentialStore = Mock()  # noqa: F811
     UnencryptedFileCredentialStore.return_value = True
