@@ -2,6 +2,8 @@
 
 [![Build Status](https://travis-ci.org/powersj/ubuntu-bug-triage.svg?branch=master)](https://travis-ci.org/powersj/ubuntu-bug-triage) [![Snap Status](https://build.snapcraft.io/badge/powersj/ubuntu-bug-triage.svg)](https://build.snapcraft.io/user/powersj/ubuntu-bug-triage)
 
+[![Get it from the Snap Store](https://snapcraft.io/static/images/badges/en/snap-store-black.svg)](https://snapcraft.io/ubuntu-bug-triage)
+
 Get involved and help fix Ubuntu bugs! Obtain a list of bugs for an Ubuntu team or package that were created or updated yesterday.
 
 Users can further define the number of days to triage to increase the number of bugs found, the output type to allow machine readable output, or set the behavior to open the bugs in a browser and immediately begin bug triage.

@@ -15,7 +15,7 @@ with open(README_FILE, 'r') as readme:
 
 setup(
     name='ubuntu-bug-triage',
-    version='18.6',
+    version='19.1',
     description='Recently updated Launchpad bugs for triage',
     long_description=README_TEXT,
     long_description_content_type='text/markdown',
@@ -31,8 +31,7 @@ setup(
         "Development Status :: 5 - Production/Stable",
         "Environment :: Console",
         "Intended Audience :: Developers",
-        "License :: OSI Approved :: GNU General Public License v3 or later"
-        " (GPLv3+)",
+        "License :: OSI Approved :: GNU General Public License v3 (GPLv3)",
         "Natural Language :: English",
         "Operating System :: POSIX :: Linux",
         "Programming Language :: Python :: 3 :: Only",
