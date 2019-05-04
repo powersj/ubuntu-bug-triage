@@ -87,7 +87,12 @@ class TerminalView(BaseView):
         """Initialize terminal view."""
         super().__init__()
 
-        _, self.term_columns = os.popen('stty size', 'r').read().split()
+        try:
+            _, self.term_columns = os.popen('stty size 2>/dev/null', 'r').read().split()
+        except:
+            # Fallback to a reasonable default if `stty size` fails, e.g. when
+            # the script not called from a terminal.
+            self.term_columns = 80
 
         # The table has a set number characters that always exist:
         #     4 for '|' boarders
