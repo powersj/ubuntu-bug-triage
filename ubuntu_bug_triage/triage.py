@@ -81,7 +81,7 @@ class TeamTriage(Triage):
     def current_backlog_count(self):
         """Get team's current backlog count."""
         return len(
-            self.launchpad.ubuntu.distributions['Ubuntu'].searchTasks(
+            self.launchpad.distributions['Ubuntu'].searchTasks(
                 bug_subscriber=self.team
             )
         )
@@ -89,7 +89,7 @@ class TeamTriage(Triage):
     def updated_bugs(self):
         """Print update bugs for a specific date or date range."""
         updated_tasks = (
-            self.launchpad.ubuntu.distributions['Ubuntu'].searchTasks(
+            self.launchpad.distributions['Ubuntu'].searchTasks(
                 modified_since=self.date,
                 structural_subscriber=self.team
             )
@@ -127,7 +127,7 @@ class PackageTriage(Triage):
 
         self._log.debug('finding bugs for package: %s', package)
         self.package = (
-            self.launchpad.ubuntu.distributions['Ubuntu'].getSourcePackage(
+            self.launchpad.distributions['Ubuntu'].getSourcePackage(
                 name=package
             )
         )
