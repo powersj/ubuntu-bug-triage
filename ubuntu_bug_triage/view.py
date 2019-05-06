@@ -88,8 +88,9 @@ class TerminalView(BaseView):
         super().__init__()
 
         try:
-            _, self.term_columns = os.popen('stty size 2>/dev/null', 'r').read().split()
-        except:
+            cmd = 'stty size 2>/dev/null'
+            _, self.term_columns = os.popen(cmd, 'r').read().split()
+        except OSError:
             # Fallback to a reasonable default if `stty size` fails, e.g. when
             # the script not called from a terminal.
             self.term_columns = 80
