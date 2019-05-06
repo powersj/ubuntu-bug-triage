@@ -3,7 +3,7 @@
 
 import json
 import logging
-import os
+import shutil
 import textwrap
 import time
 import webbrowser
@@ -87,13 +87,8 @@ class TerminalView(BaseView):
         """Initialize terminal view."""
         super().__init__()
 
-        try:
-            cmd = 'stty size 2>/dev/null'
-            _, self.term_columns = os.popen(cmd, 'r').read().split()
-        except OSError:
-            # Fallback to a reasonable default if `stty size` fails, e.g. when
-            # the script not called from a terminal.
-            self.term_columns = 80
+        # shutil.get_terminal_size() fallback default is 80x24.
+        self.term_columns = shutil.get_terminal_size().columns
 
         # The table has a set number characters that always exist:
         #     4 for '|' boarders
