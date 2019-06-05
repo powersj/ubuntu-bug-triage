@@ -39,3 +39,12 @@ UBUNTU_PACKAGE_TEAMS = [
     'translators-packages',
     'snappy-dev',
 ]
+
+# By default show only bugs with any of the following statuses.
+ACTIONABLE_BUG_STATUSES = [
+    'New',
+    'Incomplete',
+    'Confirmed',
+    'Triaged',
+    'In Progress'
+]
