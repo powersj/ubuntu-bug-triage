@@ -49,14 +49,15 @@ def parse_args():
         help='include project bugs in output'
     )
     parser.add_argument(
-        '--status', '-s', action='append', default=None, metavar='STATUS',
-        choices=["New", "Incomplete", "Opinion", "Invalid", "Won't Fix",
+        '--status', '-s', action='append', default=[], metavar='STATUS',
+        choices=["any", "New", "Incomplete", "Opinion", "Invalid", "Won't Fix",
                  "Expired", "Confirmed", "Triaged", "In Progress",
                  "Fix Committed", "Fix Released", "Incomplete (with response)",
                  "Incomplete (without response)"],
         help='Restrict the search to bugs with the given status.'
         ' Can be specified multiple times. Defaults: ' + ', '.join(
-            ACTIONABLE_BUG_STATUSES) + '.')
+            ACTIONABLE_BUG_STATUSES) + '.'
+    )
 
     return parser.parse_args()
 
@@ -73,8 +74,10 @@ def setup_logging(debug):
 def launch():
     """Launch ubuntu-bug-triage."""
     args = parse_args()
-    if args.status is None:
+    if not args.status:
         args.status = ACTIONABLE_BUG_STATUSES
+    elif 'any' in args.status:
+        args.status = []
     args.status = list(set(args.status))
     setup_logging(args.debug)
 
