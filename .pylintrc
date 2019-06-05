@@ -6,3 +6,9 @@ jobs=4
 # R0903: Too few public methods (%s/%s)
 # C0103: Invalid name
 disable=R0903,C0103
+
+[DESIGN]
+
+# Maximum number of arguments for function / method.
+# R0913: Too many arguments (%s/%s) (too-many-arguments)
+max-args=6

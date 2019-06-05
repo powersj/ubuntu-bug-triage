@@ -6,6 +6,7 @@ import logging
 import sys
 
 from . import UBUNTU_PACKAGE_TEAMS
+from . import ACTIONABLE_BUG_STATUSES
 from .triage import PackageTriage, TeamTriage
 from .view import BrowserView, CSVView, JSONView, TerminalView
 
@@ -47,6 +48,16 @@ def parse_args():
         '--include-project', '-p', action='store_true',
         help='include project bugs in output'
     )
+    parser.add_argument(
+        '--status', '-s', action='append', default=[], metavar='STATUS',
+        choices=["any", "New", "Incomplete", "Opinion", "Invalid", "Won't Fix",
+                 "Expired", "Confirmed", "Triaged", "In Progress",
+                 "Fix Committed", "Fix Released", "Incomplete (with response)",
+                 "Incomplete (without response)"],
+        help='Restrict the search to bugs with the given status.'
+        ' Can be specified multiple times. Defaults: ' + ', '.join(
+            ACTIONABLE_BUG_STATUSES) + '.'
+    )
 
     return parser.parse_args()
 
@@ -63,6 +74,11 @@ def setup_logging(debug):
 def launch():
     """Launch ubuntu-bug-triage."""
     args = parse_args()
+    if not args.status:
+        args.status = ACTIONABLE_BUG_STATUSES
+    elif 'any' in args.status:
+        args.status = []
+    args.status = list(set(args.status))
     setup_logging(args.debug)
 
     if args.package_or_team in UBUNTU_PACKAGE_TEAMS:
@@ -70,10 +86,11 @@ def launch():
             logging.getLogger(__name__).warning(
                 "N.B. --include-project has no effect when running against a"
                 " package team")
-        triage = TeamTriage(args.package_or_team, args.days, args.anon)
+        triage = TeamTriage(args.package_or_team, args.days,
+                            args.anon, args.status)
     else:
         triage = PackageTriage(args.package_or_team, args.days, args.anon,
-                               args.include_project)
+                               args.include_project, args.status)
 
     bugs = triage.updated_bugs()
     if args.csv:

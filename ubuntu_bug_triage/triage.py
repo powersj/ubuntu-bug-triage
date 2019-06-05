@@ -71,18 +71,20 @@ class Triage:
 class TeamTriage(Triage):
     """Triage Launchpad bugs for a particular Ubuntu team."""
 
-    def __init__(self, team, days, anon):
+    def __init__(self, team, days, anon, status):
         """Initialize Team Triage."""
         super().__init__(days, anon)
 
         self._log.debug('finding bugs for team: %s', team)
         self.team = self.launchpad.people[team]
+        self.status = status
 
     def current_backlog_count(self):
         """Get team's current backlog count."""
         return len(
             self.launchpad.distributions['Ubuntu'].searchTasks(
-                bug_subscriber=self.team
+                bug_subscriber=self.team,
+                status=self.status
             )
         )
 
@@ -91,7 +93,8 @@ class TeamTriage(Triage):
         updated_tasks = (
             self.launchpad.distributions['Ubuntu'].searchTasks(
                 modified_since=self.date,
-                structural_subscriber=self.team
+                structural_subscriber=self.team,
+                status=self.status
             )
         )
 
@@ -121,7 +124,7 @@ class TeamTriage(Triage):
 class PackageTriage(Triage):
     """Triage Launchpad bugs for a particular package."""
 
-    def __init__(self, package, days, anon, include_project):
+    def __init__(self, package, days, anon, include_project, status):
         """Initialize package triage."""
         super().__init__(days, anon)
 
@@ -141,20 +144,23 @@ class PackageTriage(Triage):
             except KeyError:
                 self._log.error('Oops: No project with that name exists')
                 sys.exit(1)
+        self.status = status
 
     def current_backlog_count(self):
         """Get packages's current backlog count."""
-        count = len(self.package.searchTasks())
+        count = len(self.package.searchTasks(status=self.status))
         if self.project is not None:
-            count += len(self.project.searchTasks())
+            count += len(self.project.searchTasks(status=self.status))
         return count
 
     def updated_bugs(self):
         """Print update bugs for a specific date or date range."""
-        package_tasks = self.package.searchTasks(modified_since=self.date)
+        package_tasks = self.package.searchTasks(
+            modified_since=self.date, status=self.status)
         project_tasks = []
         if self.project is not None:
-            project_tasks = self.project.searchTasks(modified_since=self.date)
+            project_tasks = self.project.searchTasks(
+                modified_since=self.date, status=self.status)
 
         # launchpadlib Collections don't support appending one another, so
         # synthesise an iterable containing both the Collections we care about
