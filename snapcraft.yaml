@@ -23,6 +23,7 @@ apps:
         plugs:
             - browser-support
             - desktop
+            - home
             - network
             - network-bind
 

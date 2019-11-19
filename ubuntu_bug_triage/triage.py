@@ -5,7 +5,6 @@ from datetime import datetime, timedelta
 import itertools
 import logging
 import os
-import sys
 
 from launchpadlib.launchpad import Launchpad
 from launchpadlib.credentials import UnencryptedFileCredentialStore
@@ -134,33 +133,42 @@ class PackageTriage(Triage):
                 name=package
             )
         )
+
         if self.package is None:
-            self._log.error('Oops: No package with that name exists')
-            sys.exit(1)
+            self._log.warning('warn: No Ubuntu package with that name exists')
+
         self.project = None
         if include_project:
             try:
                 self.project = self.launchpad.projects[package]
             except KeyError:
-                self._log.error('Oops: No project with that name exists')
-                sys.exit(1)
+                self._log.warning(
+                    'Oops: No Launchpad project with that name exists'
+                )
+
         self.status = status
 
     def current_backlog_count(self):
         """Get packages's current backlog count."""
-        count = len(self.package.searchTasks(status=self.status))
-        if self.project is not None:
+        count = 0
+        if self.package:
+            count += len(self.package.searchTasks(status=self.status))
+        if self.project:
             count += len(self.project.searchTasks(status=self.status))
         return count
 
     def updated_bugs(self):
         """Print update bugs for a specific date or date range."""
-        package_tasks = self.package.searchTasks(
-            modified_since=self.date, status=self.status)
+        package_tasks = []
+        if self.package is not None:
+            package_tasks = self.package.searchTasks(
+                modified_since=self.date, status=self.status
+            )
         project_tasks = []
         if self.project is not None:
             project_tasks = self.project.searchTasks(
-                modified_since=self.date, status=self.status)
+                modified_since=self.date, status=self.status
+            )
 
         # launchpadlib Collections don't support appending one another, so
         # synthesise an iterable containing both the Collections we care about
