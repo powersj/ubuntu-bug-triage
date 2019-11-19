@@ -135,7 +135,7 @@ class PackageTriage(Triage):
         )
 
         if self.package is None:
-            self._log.warning('warn: No Ubuntu package with that name exists')
+            self._log.warning('warn: no Ubuntu package with that name exists')
 
         self.project = None
         if include_project:
@@ -143,7 +143,7 @@ class PackageTriage(Triage):
                 self.project = self.launchpad.projects[package]
             except KeyError:
                 self._log.warning(
-                    'Oops: No Launchpad project with that name exists'
+                    'warn: no Launchpad project with that name exists'
                 )
 
         self.status = status
