@@ -31,7 +31,7 @@ UBUNTU_PACKAGE_TEAMS = [
     'maas-maintainers',
     'ubuntu-server',
     'ubuntu-printing',
-    'ubuntu-security-bugs',
+    'ubuntu-security',
     'mir-team',
     'kernel-packages',
     'unsubscribed',
