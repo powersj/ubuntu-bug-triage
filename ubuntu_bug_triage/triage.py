@@ -134,7 +134,7 @@ class PackageTriage(Triage):
             )
         )
 
-        if self.package is None:
+        if self.package is None and not include_project:
             self._log.warning('warn: no Ubuntu package with that name exists')
 
         self.project = None
