@@ -9,11 +9,11 @@ class BugTask:
         """Initialize Bug Task."""
         self._lp = lp_link
 
-        self.src_pkg = self.target.split(' ')[0]
+        self.src_pkg = self.target.split(" ")[0]
 
     def __repr__(self):
         """Representation of specific task."""
-        return '- %-20s [%s]' % (self.target, self.status)
+        return "- %-20s [%s]" % (self.target, self.status)
 
     @property
     def importance(self):
@@ -61,8 +61,4 @@ class Bug:
 
     def to_json(self):
         """Return JSON representation of object."""
-        return {
-            'id': self.id,
-            'title': self.title,
-            'affects': self.affects
-        }
+        return {"id": self.id, "title": self.title, "affects": self.affects}

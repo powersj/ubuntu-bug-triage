@@ -10,10 +10,12 @@ from .triage import Triage
 def test_launchpad_login():
     """Test launchpad login."""
     from launchpadlib.credentials import UnencryptedFileCredentialStore
+
     UnencryptedFileCredentialStore = Mock()  # noqa: F811
     UnencryptedFileCredentialStore.return_value = True
 
     from launchpadlib.launchpad import Launchpad
+
     Launchpad.login_with = Mock()
     Launchpad.login_with.return_value = True
 
@@ -30,10 +32,12 @@ def test_launchpad_login():
 def test_launchpad_login_anon():
     """Test anonymous login."""
     from launchpadlib.credentials import UnencryptedFileCredentialStore
+
     UnencryptedFileCredentialStore = Mock()  # noqa: F811
     UnencryptedFileCredentialStore.return_value = True
 
     from launchpadlib.launchpad import Launchpad
+
     Launchpad.login_anonymously = Mock()
     Launchpad.login_anonymously.return_value = True
 

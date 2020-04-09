@@ -36,7 +36,7 @@ class BrowserView(BaseView):
         """Initialize browser view."""
         super().__init__()
 
-        self._log.debug('opening bugs in browser')
+        self._log.debug("opening bugs in browser")
         self.opened = False
         for bug in bugs:
             self._open_url(bug.url)
@@ -59,11 +59,9 @@ class CSVView(BaseView):
         """Initialize CSV view."""
         super().__init__()
 
-        print('id,affects,title')
+        print("id,affects,title")
         for bug in bugs:
-            print('LP: #%s,"%s",%s' % (
-                bug.id, ','.join(bug.affects), bug.title
-            ))
+            print('LP: #%s,"%s",%s' % (bug.id, ",".join(bug.affects), bug.title))
 
 
 class JSONView(BaseView):
@@ -73,11 +71,7 @@ class JSONView(BaseView):
         """Initialize JSON view."""
         super().__init__()
 
-        print(json.dumps(
-            [bug.to_json() for bug in bugs],
-            indent=4,
-            ensure_ascii=False
-        ))
+        print(json.dumps([bug.to_json() for bug in bugs], indent=4, ensure_ascii=False))
 
 
 class TerminalView(BaseView):
@@ -101,23 +95,25 @@ class TerminalView(BaseView):
 
         # The title width will expand as the terminal expands,
         # but will expect a width no less than 80
-        width_title = (max(80, int(self.term_columns)) -
-                       width_affects - width_table)
+        width_title = max(80, int(self.term_columns)) - width_affects - width_table
 
         table = []
         for bug in bugs:
             affects = [
                 textwrap.fill(
-                    pkg.replace('(Ubuntu)', '(U)').replace('(Debian)', '(D)'),
+                    pkg.replace("(Ubuntu)", "(U)").replace("(Debian)", "(D)"),
                     width=width_affects,
-                    subsequent_indent='    '
-                ) for pkg in bug.affects
+                    subsequent_indent="    ",
+                )
+                for pkg in bug.affects
             ]
 
-            table.append([
-                'LP: #%s' % bug.id,
-                '\n'.join(affects),
-                textwrap.fill(bug.title, width=width_title, max_lines=4),
-            ])
+            table.append(
+                [
+                    "LP: #%s" % bug.id,
+                    "\n".join(affects),
+                    textwrap.fill(bug.title, width=width_title, max_lines=4),
+                ]
+            )
 
-        print(tabulate(table, ['id', 'affects', 'title'], 'grid'))
+        print(tabulate(table, ["id", "affects", "title"], "grid"))

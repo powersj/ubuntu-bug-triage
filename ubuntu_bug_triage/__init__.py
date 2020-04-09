@@ -5,14 +5,14 @@
 # not want to be included in the full team triage.
 #
 BLACKLIST = {
-    'ubuntu-server': [
-        'cloud-init',
-        'curtin',
-        'juju',
-        'juju-core',
-        'lxc',
-        'lxd',
-        'maas'
+    "ubuntu-server": [
+        "cloud-init",
+        "curtin",
+        "juju",
+        "juju-core",
+        "lxc",
+        "lxd",
+        "maas",
     ]
 }
 
@@ -22,29 +22,29 @@ BLACKLIST = {
 # https://people.canonical.com/~ubuntu-archive/package-team-mapping.json
 #
 UBUNTU_PACKAGE_TEAMS = [
-    'pkg-ime',
-    'ubuntu-openstack',
-    'documentation-packages',
-    'kubuntu-bugs',
-    'checkbox-bugs',
-    'foundations-bugs',
-    'maas-maintainers',
-    'ubuntu-server',
-    'ubuntu-printing',
-    'ubuntu-security',
-    'mir-team',
-    'kernel-packages',
-    'unsubscribed',
-    'desktop-packages',
-    'translators-packages',
-    'snappy-dev',
+    "pkg-ime",
+    "ubuntu-openstack",
+    "documentation-packages",
+    "kubuntu-bugs",
+    "checkbox-bugs",
+    "foundations-bugs",
+    "maas-maintainers",
+    "ubuntu-server",
+    "ubuntu-printing",
+    "ubuntu-security",
+    "mir-team",
+    "kernel-packages",
+    "unsubscribed",
+    "desktop-packages",
+    "translators-packages",
+    "snappy-dev",
 ]
 
 # By default show only bugs with any of the following statuses.
 ACTIONABLE_BUG_STATUSES = [
-    'New',
-    'Incomplete',
-    'Confirmed',
-    'Triaged',
-    'In Progress'
+    "New",
+    "Incomplete",
+    "Confirmed",
+    "Triaged",
+    "In Progress",
 ]

@@ -11,16 +11,23 @@ class MockBugTaskRandom:
     def __init__(self):
         """Initialize class."""
         self.importance = random.choice(
-            ['Wishlist', 'Low', 'Medium', 'High', 'Critical', 'Undecided']
+            ["Wishlist", "Low", "Medium", "High", "Critical", "Undecided"]
         )
         self.status = random.choice(
-            ['New', 'Incomplete', 'Opinion', 'Invalid', 'Won\'t Fix',
-             'Confirmed', 'Triaged', 'In Progress', 'Fix Committed',
-             'Fix Released']
+            [
+                "New",
+                "Incomplete",
+                "Opinion",
+                "Invalid",
+                "Won't Fix",
+                "Confirmed",
+                "Triaged",
+                "In Progress",
+                "Fix Committed",
+                "Fix Released",
+            ]
         )
-        self.bug_target_name = random.choice(
-            ['Trusty', 'Xenial', 'Bionic', 'Disco']
-        )
+        self.bug_target_name = random.choice(["Trusty", "Xenial", "Bionic", "Disco"])
 
 
 class MockBugTask:
@@ -28,9 +35,9 @@ class MockBugTask:
 
     def __init__(self):
         """Initialize class."""
-        self.importance = 'Wishlist'
-        self.status = 'Triaged'
-        self.bug_target_name = 'Bionic'
+        self.importance = "Wishlist"
+        self.status = "Triaged"
+        self.bug_target_name = "Bionic"
 
 
 class MockBug:
@@ -38,13 +45,13 @@ class MockBug:
 
     def __init__(self):
         """Initialize class."""
-        self.id = '1761240'
-        self.title = 'SRU pollinate 4.33'
-        self.status = 'Fix Released'
-        self.importance = 'Low'
-        self.bug_target_name = 'pollinate (Ubuntu)'
+        self.id = "1761240"
+        self.title = "SRU pollinate 4.33"
+        self.status = "Fix Released"
+        self.importance = "Low"
+        self.bug_target_name = "pollinate (Ubuntu)"
         self.web_link = (
-            'https://bugs.launchpad.net/ubuntu/+source/pollinate/+bug/1761240'
+            "https://bugs.launchpad.net/ubuntu/+source/pollinate/+bug/1761240"
         )
         num_tasks = range(random.randint(1, 8))
         self.bug_tasks = [MockBugTaskRandom() for _ in num_tasks]
@@ -55,13 +62,13 @@ class MockBugNoTasks:
 
     def __init__(self):
         """Initialize class."""
-        self.id = '1761240'
-        self.title = 'SRU pollinate 4.33'
-        self.status = 'Fix Released'
-        self.importance = 'Low'
-        self.bug_target_name = 'pollinate (Ubuntu)'
+        self.id = "1761240"
+        self.title = "SRU pollinate 4.33"
+        self.status = "Fix Released"
+        self.importance = "Low"
+        self.bug_target_name = "pollinate (Ubuntu)"
         self.web_link = (
-            'https://bugs.launchpad.net/ubuntu/+source/pollinate/+bug/1761240'
+            "https://bugs.launchpad.net/ubuntu/+source/pollinate/+bug/1761240"
         )
         self.bug_tasks = []
 
@@ -71,13 +78,13 @@ class MockBug1234567:
 
     def __init__(self):
         """Initialize class."""
-        self.id = '1234567'
-        self.title = 'Test Bug'
-        self.status = 'In Progress'
-        self.importance = 'Critical'
-        self.bug_target_name = 'cloud-init (Ubuntu)'
+        self.id = "1234567"
+        self.title = "Test Bug"
+        self.status = "In Progress"
+        self.importance = "Critical"
+        self.bug_target_name = "cloud-init (Ubuntu)"
         self.web_link = (
-            'https://bugs.launchpad.net/ubuntu/+source/cloud-init/+bug/1234567'
+            "https://bugs.launchpad.net/ubuntu/+source/cloud-init/+bug/1234567"
         )
         self.bug_tasks = []
 
@@ -87,13 +94,13 @@ class MockBug1111111:
 
     def __init__(self):
         """Initialize class."""
-        self.id = '1111111'
-        self.title = 'Test Bug 2'
-        self.status = 'Triaged'
-        self.importance = 'Wishlist'
-        self.bug_target_name = 'curtin (Ubuntu)'
+        self.id = "1111111"
+        self.title = "Test Bug 2"
+        self.status = "Triaged"
+        self.importance = "Wishlist"
+        self.bug_target_name = "curtin (Ubuntu)"
         self.web_link = (
-            'https://bugs.launchpad.net/ubuntu/+source/cloud-init/+bug/1111111'
+            "https://bugs.launchpad.net/ubuntu/+source/cloud-init/+bug/1111111"
         )
         self.bug_tasks = []
 
@@ -140,17 +147,13 @@ def test_url():
 def test_json():
     """Verify JSON output."""
     bug = Bug(MockBug1234567())
-    json_output = {
-        'id': bug.id,
-        'title': bug.title,
-        'affects': bug.affects
-    }
+    json_output = {"id": bug.id, "title": bug.title, "affects": bug.affects}
     assert bug.to_json() == json_output
 
 
 def test_bug_task():
     """Verify bug task attributes."""
     task = BugTask(MockBugTask())
-    assert task.importance == 'Wishlist'
-    assert task.status == 'Triaged'
-    assert repr(task) == '- %-20s [%s]' % (task.target, task.status)
+    assert task.importance == "Wishlist"
+    assert task.status == "Triaged"
+    assert repr(task) == "- %-20s [%s]" % (task.target, task.status)
