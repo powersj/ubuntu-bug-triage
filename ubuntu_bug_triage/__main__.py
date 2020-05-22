@@ -73,6 +73,11 @@ def parse_args():
         + ", ".join(ACTIONABLE_BUG_STATUSES)
         + ".",
     )
+    parser.add_argument(
+        "--ignore",
+        nargs='*',
+        help="""ignore bugs edited last by the listed person""",
+    )
 
     return parser.parse_args()
 
@@ -96,13 +101,16 @@ def launch():
     args.status = list(set(args.status))
     setup_logging(args.debug)
 
+    if not args.ignore:
+        args.ignore = []
+
     if args.package_or_team in UBUNTU_PACKAGE_TEAMS:
         if args.include_project:
             logging.getLogger(__name__).warning(
                 "N.B. --include-project has no effect when running against a"
                 " package team"
             )
-        triage = TeamTriage(args.package_or_team, args.days, args.anon, args.status)
+        triage = TeamTriage(args.package_or_team, args.days, args.anon, args.status, args.ignore)
     else:
         triage = PackageTriage(
             args.package_or_team,
@@ -110,6 +118,7 @@ def launch():
             args.anon,
             args.include_project,
             args.status,
+            args.ignore
         )
 
     bugs = triage.updated_bugs()
