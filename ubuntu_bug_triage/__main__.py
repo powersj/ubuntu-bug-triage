@@ -36,6 +36,12 @@ def parse_args():
     parser.add_argument(
         "--debug", action="store_true", help="additional logging output"
     )
+    parser.add_argument(
+        "--ignore-user",
+        default=[],
+        nargs='*',
+        help="""ignore bugs edited last by the listed person""",
+    )
     parser.add_argument("--json", action="store_true", help="output as JSON")
     parser.add_argument(
         "--open", action="store_true", help="open resulting bugs in web browser",
@@ -72,12 +78,6 @@ def parse_args():
         " Can be specified multiple times. Defaults: "
         + ", ".join(ACTIONABLE_BUG_STATUSES)
         + ".",
-    )
-    parser.add_argument(
-        "--ignore-user",
-        default=[],
-        nargs='*',
-        help="""ignore bugs edited last by the listed person""",
     )
 
     return parser.parse_args()
