@@ -74,7 +74,7 @@ def parse_args():
         + ".",
     )
     parser.add_argument(
-        "--ignore",
+        "--ignore-user",
         nargs='*',
         help="""ignore bugs edited last by the listed person""",
     )
