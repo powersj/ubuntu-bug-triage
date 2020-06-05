@@ -108,7 +108,8 @@ def launch():
                 "N.B. --include-project has no effect when running against a"
                 " package team"
             )
-        triage = TeamTriage(args.package_or_team, args.days, args.anon, args.status, args.ignore_user)
+        triage = TeamTriage(args.package_or_team, args.days, args.anon, args.status,
+            args.ignore_user)
     else:
         triage = PackageTriage(
             args.package_or_team,
