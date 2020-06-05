@@ -75,6 +75,7 @@ def parse_args():
     )
     parser.add_argument(
         "--ignore-user",
+        default=[],
         nargs='*',
         help="""ignore bugs edited last by the listed person""",
     )
@@ -100,9 +101,6 @@ def launch():
         args.status = []
     args.status = list(set(args.status))
     setup_logging(args.debug)
-
-    if not args.ignore:
-        args.ignore = []
 
     if args.package_or_team in UBUNTU_PACKAGE_TEAMS:
         if args.include_project:
