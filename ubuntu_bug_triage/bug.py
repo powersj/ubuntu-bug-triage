@@ -34,7 +34,7 @@ class BugTask:
 class Bug:
     """Bug class."""
 
-    def __init__(self, lp_link, ignore_user):
+    def __init__(self, lp_link, ignore_user = []):
         """Initialize bug class."""
         self._lp = lp_link
 
