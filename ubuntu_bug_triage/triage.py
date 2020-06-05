@@ -70,14 +70,14 @@ class Triage:
 class TeamTriage(Triage):
     """Triage Launchpad bugs for a particular Ubuntu team."""
 
-    def __init__(self, team, days, anon, status, ignore):
+    def __init__(self, team, days, anon, status, ignore_user):
         """Initialize Team Triage."""
         super().__init__(days, anon)
 
         self._log.debug("finding bugs for team: %s", team)
         self.team = self.launchpad.people[team]
         self.status = status
-        self.ignore = ignore
+        self.ignore_user = ignore_user
 
     def current_backlog_count(self):
         """Get team's current backlog count."""
@@ -99,20 +99,12 @@ class TeamTriage(Triage):
         for bug_id in sorted(self._tasks_to_bug_ids(updated_tasks)):
             bug = Bug(self.launchpad.bugs[bug_id])
 
-            lpbug = self.launchpad.bugs[bug_id]
-            commenter = None
-            for comment in lpbug.messages:
-                commenter = comment.owner_link.split('~')[1]
-            person = None
-            for active in lpbug.activity:
-                person = active.person_link.split('~')[1]
-
             if self.team.name in BLACKLIST:
                 if self._all_src_on_blacklist(bug.tasks, self.team.name):
                     self._log.debug("skipping bug: %s", bug_id)
                     continue
 
-            if commenter not in self.ignore and person not in self.ignore:
+            if bug.last_active_user not in self.ignore_user:
                 bugs.append(bug)
 
         return bugs
@@ -130,7 +122,7 @@ class TeamTriage(Triage):
 class PackageTriage(Triage):
     """Triage Launchpad bugs for a particular package."""
 
-    def __init__(self, package, days, anon, include_project, status, ignore):
+    def __init__(self, package, days, anon, include_project, status, ignore_user):
         """Initialize package triage."""
         super().__init__(days, anon)
 
@@ -138,7 +130,7 @@ class PackageTriage(Triage):
         self.package = self.launchpad.distributions["Ubuntu"].getSourcePackage(
             name=package
         )
-        self.ignore = ignore
+        self.ignore_user = ignore_user
 
         if self.package is None and not include_project:
             self._log.warning("warn: no Ubuntu package with that name exists")
@@ -180,15 +172,8 @@ class PackageTriage(Triage):
 
         bugs = []
         for bug_id in sorted(self._tasks_to_bug_ids(updated_tasks)):
-            bug = self.launchpad.bugs[bug_id]
-
-            commenter = None
-            for comment in bug.messages:
-                commenter = comment.owner_link.split('~')[1]
-            person = None
-            for active in bug.activity:
-                person = active.person_link.split('~')[1]
-            if commenter not in self.ignore and person not in self.ignore:
-                bugs.append(Bug(bug))
+            bug = Bug(self.launchpad.bugs[bug_id])
+            if bug.last_active_user not in self.ignore_user:
+                bugs.append(bug)
 
         return bugs
