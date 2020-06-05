@@ -109,7 +109,7 @@ def launch():
                 " package team"
             )
         triage = TeamTriage(args.package_or_team, args.days, args.anon, args.status,
-            args.ignore_user)
+                            args.ignore_user)
     else:
         triage = PackageTriage(
             args.package_or_team,
