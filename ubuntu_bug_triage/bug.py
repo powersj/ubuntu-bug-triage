@@ -34,7 +34,7 @@ class BugTask:
 class Bug:
     """Bug class."""
 
-    def __init__(self, lp_link):
+    def __init__(self, lp_link, ignore_user):
         """Initialize bug class."""
         self._lp = lp_link
 
@@ -42,21 +42,25 @@ class Bug:
         self.title = self._lp.title
 
         self.tasks = []
+
         for task in self._lp.bug_tasks:
             self.tasks.append(BugTask(task))
 
-        for comment in self._lp.messages:
-            datecreated = comment.date_created
-            commenter = comment.owner_link.split('~')[1]
-
-        for active in self._lp.activity:
-            datechanged = active.datechanged
-            person = active.person_link.split('~')[1]
-
-        if datecreated > datechanged:
-            self.last_active_user = commenter
+        if not ignore_user:
+            self.last_active_user = ''
         else:
-            self.last_active_user = person
+            for comment in self._lp.messages:
+                datecreated = comment.date_created
+                commenter = comment.owner_link.split('~')[1]
+
+            for active in self._lp.activity:
+                datechanged = active.datechanged
+                person = active.person_link.split('~')[1]
+
+            if datecreated > datechanged:
+                self.last_active_user = commenter
+            else:
+                self.last_active_user = person
 
     def __eq__(self, other):
         """Two bugs are identical if their ids are equal."""

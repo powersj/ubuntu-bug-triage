@@ -97,7 +97,7 @@ class TeamTriage(Triage):
 
         bugs = []
         for bug_id in sorted(self._tasks_to_bug_ids(updated_tasks)):
-            bug = Bug(self.launchpad.bugs[bug_id])
+            bug = Bug(self.launchpad.bugs[bug_id], self.ignore_user)
 
             if self.team.name in BLACKLIST:
                 if self._all_src_on_blacklist(bug.tasks, self.team.name):
@@ -172,7 +172,7 @@ class PackageTriage(Triage):
 
         bugs = []
         for bug_id in sorted(self._tasks_to_bug_ids(updated_tasks)):
-            bug = Bug(self.launchpad.bugs[bug_id])
+            bug = Bug(self.launchpad.bugs[bug_id], self.ignore_user)
             if bug.last_active_user not in self.ignore_user:
                 bugs.append(bug)
 
