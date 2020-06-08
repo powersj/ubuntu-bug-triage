@@ -39,12 +39,12 @@ def parse_args():
     parser.add_argument(
         "--ignore-user",
         default=[],
-        nargs='*',
+        nargs="*",
         help="""ignore bugs edited last by the listed person""",
     )
     parser.add_argument("--json", action="store_true", help="output as JSON")
     parser.add_argument(
-        "--open", action="store_true", help="open resulting bugs in web browser",
+        "--open", action="store_true", help="open resulting bugs in web browser"
     )
     parser.add_argument(
         "--include-project",
@@ -108,8 +108,9 @@ def launch():
                 "N.B. --include-project has no effect when running against a"
                 " package team"
             )
-        triage = TeamTriage(args.package_or_team, args.days, args.anon, args.status,
-                            args.ignore_user)
+        triage = TeamTriage(
+            args.package_or_team, args.days, args.anon, args.status, args.ignore_user
+        )
     else:
         triage = PackageTriage(
             args.package_or_team,
@@ -117,7 +118,7 @@ def launch():
             args.anon,
             args.include_project,
             args.status,
-            args.ignore_user
+            args.ignore_user,
         )
 
     bugs = triage.updated_bugs()

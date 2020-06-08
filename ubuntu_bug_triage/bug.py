@@ -47,15 +47,15 @@ class Bug:
             self.tasks.append(BugTask(task))
 
         if not ignore_user:
-            self.last_active_user = ''
+            self.last_active_user = ""
         else:
             for comment in self._lp.messages:
                 datecreated = comment.date_created
-                commenter = comment.owner_link.split('~')[1]
+                commenter = comment.owner_link.split("~")[1]
 
             for active in self._lp.activity:
                 datechanged = active.datechanged
-                person = active.person_link.split('~')[1]
+                person = active.person_link.split("~")[1]
 
             if datecreated > datechanged:
                 self.last_active_user = commenter
