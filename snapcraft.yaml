@@ -9,11 +9,10 @@ description: |
     output, or set the behavior to open the bugs in a browser and
     immediately begin bug triage.
 
-version: git
-version-script: git rev-parse --short HEAD
 base: core18
 grade: stable
 confinement: strict
+adopt-info: ubuntu-bug-triage
 environment:
     LC_ALL: C.UTF-8
     LANG: C.UTF-8
@@ -37,3 +36,8 @@ parts:
             - libdb5.3
             - libffi-dev
             - libssl-dev
+        override-pull: |
+            snapcraftctl pull
+            DATE="$(date +%Y.%m.%d)"
+            GIT="$(git rev-parse --short HEAD)"
+            snapcraftctl set-version "${DATE}+git${GIT}"
