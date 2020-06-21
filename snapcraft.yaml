@@ -33,9 +33,9 @@ parts:
         source: https://github.com/powersj/ubuntu-bug-triage
         source-type: git
         python-packages:
-        - pip
-        - setuptools
-        - wheel
+            - pip
+            - setuptools
+            - wheel
         stage-packages:
             - libdb5.3
             - libffi-dev
