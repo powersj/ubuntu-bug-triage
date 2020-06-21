@@ -9,7 +9,7 @@ description: |
     output, or set the behavior to open the bugs in a browser and
     immediately begin bug triage.
 
-base: core18
+base: core20
 grade: stable
 confinement: strict
 adopt-info: ubuntu-bug-triage
