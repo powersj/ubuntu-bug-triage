@@ -1,2 +1,2 @@
-launchpadlib==1.10.6
+launchpadlib==1.10.13
 tabulate>=0.8.2
