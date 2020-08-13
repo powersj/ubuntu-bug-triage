@@ -79,6 +79,9 @@ def parse_args():
         + ", ".join(ACTIONABLE_BUG_STATUSES)
         + ".",
     )
+    parser.add_argument(
+        "--urls", action="store_true", help="print only the urls of bugs to triage"
+    )
 
     return parser.parse_args()
 
@@ -122,7 +125,10 @@ def launch():
         )
 
     bugs = triage.updated_bugs()
-    if args.csv:
+    if args.urls:
+        for bug in bugs:
+            print(bug.url)
+    elif args.csv:
         CSVView(bugs)
     elif args.json:
         JSONView(bugs)
