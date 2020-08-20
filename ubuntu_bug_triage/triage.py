@@ -21,7 +21,7 @@ class Triage:
         self._log = logging.getLogger(__name__)
 
         self.launchpad = self._launchpad_connect(anon)
-        self.date = (datetime.now().date() - timedelta(days=days)).strftime("%Y-%m-%d")
+        self.date = (datetime.now() - timedelta(days=days)).strftime("%Y-%m-%dT%H:%M")
 
     def current_backlog_count(self):
         """Return the total current backlog count."""
