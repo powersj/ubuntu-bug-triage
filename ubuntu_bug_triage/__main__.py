@@ -2,6 +2,7 @@
 """Ubuntu Bug Triage module."""
 
 import argparse
+from datetime import datetime, timedelta
 import logging
 import sys
 
@@ -27,7 +28,8 @@ def parse_args():
         nargs="?",
         type=int,
         default=1,
-        help="""days of updated bugs to triage""",
+        help="""number of days (e.g 1, 10) of bugs to triage, where one day is
+        the default. Use --start-time to use a specific date.""",
     )
     parser.add_argument(
         "--anon", action="store_true", help="Anonymous login to Launchpad"
@@ -51,6 +53,11 @@ def parse_args():
         "-p",
         action="store_true",
         help="include project bugs in output",
+    )
+    parser.add_argument(
+        "--start-time",
+        help="""a date and time (e.g. '2020-10-01 14:15') to start triage
+        from. This will override the value set by days.""",
     )
     parser.add_argument(
         "--status",
@@ -86,6 +93,20 @@ def parse_args():
     return parser.parse_args()
 
 
+def parse_date(args):
+    """Parse either the number of days for triage or specific date time."""
+    if args.start_time:
+        try:
+            date = datetime.strptime(args.start_time, "%Y-%m-%d %H:%M")
+        except ValueError:
+            print("Oops: invalid format or date for start time. Use '%Y-%m-%d %H:%M'")
+            sys.exit(1)
+    else:
+        date = datetime.now() - timedelta(days=args.days)
+
+    return date.strftime("%Y-%m-%dT%H:%M")
+
+
 def setup_logging(debug):
     """Set up logging."""
     logging.basicConfig(
@@ -104,6 +125,7 @@ def launch():
         args.status = []
     args.status = list(set(args.status))
     setup_logging(args.debug)
+    date = parse_date(args)
 
     if args.package_or_team in UBUNTU_PACKAGE_TEAMS:
         if args.include_project:
@@ -112,12 +134,12 @@ def launch():
                 " package team"
             )
         triage = TeamTriage(
-            args.package_or_team, args.days, args.anon, args.status, args.ignore_user
+            args.package_or_team, date, args.anon, args.status, args.ignore_user
         )
     else:
         triage = PackageTriage(
             args.package_or_team,
-            args.days,
+            date,
             args.anon,
             args.include_project,
             args.status,
