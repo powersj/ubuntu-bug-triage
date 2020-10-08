@@ -1,7 +1,6 @@
 # This file is part of ubuntu-bug-triage. See LICENSE file for license info.
 """Triage module."""
 
-from datetime import datetime, timedelta
 import itertools
 import logging
 import os
@@ -16,12 +15,12 @@ from .bug import Bug
 class Triage:
     """Base triage class."""
 
-    def __init__(self, days, anon):
+    def __init__(self, date, anon):
         """Initialize triage class."""
         self._log = logging.getLogger(__name__)
 
         self.launchpad = self._launchpad_connect(anon)
-        self.date = (datetime.now() - timedelta(days=days)).strftime("%Y-%m-%dT%H:%M")
+        self.date = date
 
     def current_backlog_count(self):
         """Return the total current backlog count."""
@@ -70,9 +69,9 @@ class Triage:
 class TeamTriage(Triage):
     """Triage Launchpad bugs for a particular Ubuntu team."""
 
-    def __init__(self, team, days, anon, status, ignore_user):
+    def __init__(self, team, date, anon, status, ignore_user):
         """Initialize Team Triage."""
-        super().__init__(days, anon)
+        super().__init__(date, anon)
 
         self._log.debug("finding bugs for team: %s", team)
         self.team = self.launchpad.people[team]
@@ -122,9 +121,9 @@ class TeamTriage(Triage):
 class PackageTriage(Triage):
     """Triage Launchpad bugs for a particular package."""
 
-    def __init__(self, package, days, anon, include_project, status, ignore_user):
+    def __init__(self, package, date, anon, include_project, status, ignore_user):
         """Initialize package triage."""
-        super().__init__(days, anon)
+        super().__init__(date, anon)
 
         self._log.debug("finding bugs for package: %s", package)
         self.package = self.launchpad.distributions["Ubuntu"].getSourcePackage(
