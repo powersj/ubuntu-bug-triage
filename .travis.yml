@@ -1,12 +1,13 @@
 language: python
-dist: bionic
+dist: jammy
 python:
-  - 3.6
-  - 3.7
   - 3.8
+  - 3.9
+  - 3.10
 install:
+  - pip install --upgrade setuptools pip
   - pip install -r requirements.txt -r requirements-test.txt
+  - pip install .
 script:
   - make test
-  - python setup.py install
   - ubuntu-bug-triage -h
