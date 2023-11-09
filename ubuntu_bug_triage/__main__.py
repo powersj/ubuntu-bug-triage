@@ -41,7 +41,7 @@ def parse_args():
     parser.add_argument(
         "--ignore-user",
         default=[],
-        nargs="*",
+        action="append",
         help="""ignore bugs edited last by the listed person""",
     )
     parser.add_argument("--json", action="store_true", help="output as JSON")
