@@ -35,6 +35,7 @@ UBUNTU_PACKAGE_TEAMS = [
     "mir-team",
     "kernel-packages",
     "unsubscribed",
+    "debcrafters-packages",
     "desktop-packages",
     "translators-packages",
     "snappy-dev",
