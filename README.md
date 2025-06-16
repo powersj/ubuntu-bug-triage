@@ -1,6 +1,6 @@
 # Ubuntu Bug Triage
 
-[![Build Status](https://travis-ci.com/powersj/ubuntu-bug-triage.svg?branch=master)](https://travis-ci.com/powersj/ubuntu-bug-triage) [![Snap Status](https://build.snapcraft.io/badge/powersj/ubuntu-bug-triage.svg)](https://build.snapcraft.io/user/powersj/ubuntu-bug-triage)
+[![ubuntu-bug-triage](https://snapcraft.io/ubuntu-bug-triage/badge.svg)](https://snapcraft.io/ubuntu-bug-triage)
 
 [![Get it from the Snap Store](https://snapcraft.io/static/images/badges/en/snap-store-black.svg)](https://snapcraft.io/ubuntu-bug-triage)
 
