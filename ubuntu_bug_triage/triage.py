@@ -69,7 +69,7 @@ class Triage:
 class TeamTriage(Triage):
     """Triage Launchpad bugs for a particular Ubuntu team."""
 
-    def __init__(self, team, date, anon, status, ignore_user):
+    def __init__(self, team, date, anon, status, ignore_user, tags, tags_combinator):
         """Initialize Team Triage."""
         super().__init__(date, anon)
 
@@ -77,6 +77,8 @@ class TeamTriage(Triage):
         self.team = self.launchpad.people[team]
         self.status = status
         self.ignore_user = ignore_user
+        self.tags = tags
+        self.tags_combinator = tags_combinator
 
     def current_backlog_count(self):
         """Get team's current backlog count."""
@@ -92,6 +94,8 @@ class TeamTriage(Triage):
             modified_since=self.date,
             structural_subscriber=self.team,
             status=self.status,
+            tags=self.tags,
+            tags_combinator=self.tags_combinator,
         )
 
         bugs = []
@@ -121,7 +125,17 @@ class TeamTriage(Triage):
 class PackageTriage(Triage):
     """Triage Launchpad bugs for a particular package."""
 
-    def __init__(self, package, date, anon, include_project, status, ignore_user):
+    def __init__(
+        self,
+        package,
+        date,
+        anon,
+        include_project,
+        status,
+        ignore_user,
+        tags,
+        tags_combinator,
+    ):
         """Initialize package triage."""
         super().__init__(date, anon)
 
@@ -141,15 +155,19 @@ class PackageTriage(Triage):
             except KeyError:
                 self._log.warning("warn: no Launchpad project with that name exists")
 
-        self.status = status
+        self.task_filters = {
+            "status": status,
+            "tags": tags,
+            "tags_combinator": tags_combinator,
+        }
 
     def current_backlog_count(self):
         """Get packages's current backlog count."""
         count = 0
         if self.package:
-            count += len(self.package.searchTasks(status=self.status))
+            count += len(self.package.searchTasks(**self.task_filters))
         if self.project:
-            count += len(self.project.searchTasks(status=self.status))
+            count += len(self.project.searchTasks(**self.task_filters))
         return count
 
     def updated_bugs(self):
@@ -157,12 +175,12 @@ class PackageTriage(Triage):
         package_tasks = []
         if self.package is not None:
             package_tasks = self.package.searchTasks(
-                modified_since=self.date, status=self.status
+                modified_since=self.date, **self.task_filters
             )
         project_tasks = []
         if self.project is not None:
             project_tasks = self.project.searchTasks(
-                modified_since=self.date, status=self.status
+                modified_since=self.date, **self.task_filters
             )
 
         # launchpadlib Collections don't support appending one another, so

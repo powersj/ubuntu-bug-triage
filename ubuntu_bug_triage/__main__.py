@@ -12,7 +12,7 @@ from .triage import PackageTriage, TeamTriage
 from .view import BrowserView, CSVView, JSONView, TerminalView
 
 
-def parse_args():
+def parse_args(args=None):
     """Set up command-line arguments."""
     parser = argparse.ArgumentParser("ubuntu-bug-triage")
     parser.add_argument(
@@ -89,8 +89,27 @@ def parse_args():
     parser.add_argument(
         "--urls", action="store_true", help="print only the urls of bugs to triage"
     )
+    parser.add_argument(
+        "--tag",
+        "-t",
+        action="append",
+        dest="tags",
+        default=[],
+        metavar="TAG",
+        help="Restrict the search to bugs with the given tags."
+        + " Can be specified multiple times. Prefixing the tag with a '-' to"
+        + " query bugs without the tag. E.g. --tag=this --tag=-notthat",
+    )
+    parser.add_argument(
+        "--any-tag",
+        dest="tags_combinator",
+        action="store_const",
+        const="Any",
+        default="All",
+        help="Set to return bugs matching 'Any' instead of 'All' tags.",
+    )
 
-    return parser.parse_args()
+    return parser.parse_args(args=args)
 
 
 def parse_date(args):
@@ -134,7 +153,13 @@ def launch():
                 " package team"
             )
         triage = TeamTriage(
-            args.package_or_team, date, args.anon, args.status, args.ignore_user
+            args.package_or_team,
+            date,
+            args.anon,
+            args.status,
+            args.ignore_user,
+            args.tags,
+            args.tags_combinator,
         )
     else:
         triage = PackageTriage(
@@ -144,6 +169,8 @@ def launch():
             args.include_project,
             args.status,
             args.ignore_user,
+            args.tags,
+            args.tags_combinator,
         )
 
     bugs = triage.updated_bugs()
